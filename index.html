@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pour ma princesse Lamia ❤️</title>
-    
+    <title>Pour Lamia ma princesse que j'aime ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap');
 
         body {
             margin: 0;
@@ -16,212 +15,210 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #ffe0f0 0%, #ffc0cb 100%);
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-color: #ffe6eb; /* Fallback rose */
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
             text-align: center;
             color: #4a4a4a;
-            position: relative;
         }
 
-        .heart-animation {
+        /* Arrière-plan animé */
+        .bg-hearts {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             overflow: hidden;
-            z-index: 0;
+            z-index: -1;
         }
-        
-        /* Cœurs d'arrière-plan */
-        .heart {
+        .heart-bg {
             position: absolute;
-            background-color: rgba(255, 105, 180, 0.7);
-            transform: rotate(-45deg);
-            animation: floatHeart 10s infinite ease-in;
-            opacity: 0;
-            z-index: 0;
-        }
-        .heart::before, .heart::after {
-            content: "";
-            position: absolute;
-            background-color: rgba(255, 105, 180, 0.7);
-            border-radius: 50%;
-            width: 100%;
-            height: 100%;
-        }
-        .heart::before { top: -50%; left: 0; }
-        .heart::after { top: 0; left: 50%; }
-
-        @keyframes floatHeart {
-            0% { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
-            25% { opacity: 1; }
-            50% { transform: translateY(50vh) rotate(-45deg); }
-            75% { opacity: 1; }
-            100% { transform: translateY(-20vh) rotate(-45deg); opacity: 0; }
+            color: #ffb7c5;
+            animation: float 15s infinite linear;
+            font-size: 20px;
+            opacity: 0.6;
         }
 
-        #main-content {
-            z-index: 10;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        /* Conteneur principal */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.2);
             width: 90%;
             max-width: 400px;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.3s ease;
         }
 
         h1 {
-            font-family: 'Pacifico', cursive;
+            font-family: 'Dancing Script', cursive;
             color: #d81b60;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
-        /* Conteneur des boutons en Flexbox pour qu'ils soient alignés */
-        .buttons-container {
+        p { font-size: 1.1rem; margin-bottom: 25px; }
+
+        /* Boutons */
+        .btn-container {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 15px;
             margin-top: 20px;
             position: relative;
-            min-height: 60px; /* Espace réservé */
+            min-height: 60px;
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 1.2rem;
+            padding: 12px 30px;
+            font-size: 1.1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            /* Important pour que le tactile fonctionne bien */
-            touch-action: manipulation; 
+            font-weight: 600;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        #yesBtn {
-            background-color: #66bb6a;
-            color: white;
-            z-index: 20;
+        .btn-yes { background: #ff4081; color: white; }
+        .btn-no { background: #e0e0e0; color: #555; position: relative; }
+        .btn-future { 
+            background: linear-gradient(45deg, #ff4081, #ff9a9e); 
+            color: white; 
+            margin-top: 20px; 
+            width: 100%;
+            animation: pulse 2s infinite;
         }
 
-        #noBtn {
-            background-color: #ef5350;
-            color: white;
-            position: relative; /* Position normale au début */
-            transition: top 0.2s, left 0.2s; /* Mouvement fluide */
-            z-index: 15;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        #final-message {
-            display: none;
-            z-index: 100;
-            color: #d81b60;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            font-family: 'Pacifico', cursive;
-            font-size: 1.8rem;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;
+        /* Sections cachées */
+        .hidden { display: none; }
+
+        /* Image bague */
+        .ring-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+        /* Animation d'apparition */
+        .fade-in { animation: fadeIn 1s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
     </style>
 </head>
 <body>
-    
-    <div class="heart-animation" id="heartContainer"></div>
 
-    <div id="main-content">
-        <h1>Ma magnifique Lamia, ❤️</h1>
-        <p style="font-size: 1.1rem; margin-bottom: 20px;">Veux-tu être ma Valentine cette année ?</p>
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <audio id="loveSong" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/02/07/audio_13b6329766.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card" id="step1">
+        <h1>Ma magnifique Lamia ❤️</h1>
+        <p>Je voulais te demander quelque chose de spécial...</p>
+        <p><strong>Veux-tu être ma Valentine cette année ?</strong></p>
         
-        <div class="buttons-container">
-            <button id="yesBtn" onclick="celebrate()">OUI ! 😍</button>
-            <button id="noBtn">NON 😟</button>
+        <div class="btn-container">
+            <button class="btn-yes" onclick="goToStep2()">OUI ! 😍</button>
+            <button class="btn-no" id="btnNo">NON 😢</button>
         </div>
     </div>
 
-    <div id="final-message">
-        Tu as fait le bon choix ! ❤️<br>
-        Je t'aime Lamia ! 🎉<br><br>
-        <a href="https://open.spotify.com/track/47EiUVwCH4LD0ksySywGuy?si=e2f8c5b0b8b84b8b" target="_blank" style="color: #d81b60; text-decoration: underline; font-size: 1.2rem;">Clique ici pour la musique ! 🎶</a>
+    <div class="card hidden fade-in" id="step2">
+        <h1>Tu as fait le bon choix ! 🌹</h1>
+        <p>Je t'aime plus que tout ! 🎉</p>
+        <p>Mais ce n'est pas fini...</p>
+        <button class="btn-future" onclick="goToStep3()">Découvrir notre avenir ✨</button>
     </div>
 
-    <audio id="confettiSound" src="https://assets.mixkit.co/sfx/preview/mixkit-small-fanfare-celebration-2731.mp3" preload="auto"></audio>
+    <div class="card hidden fade-in" id="step3">
+        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bague de mariage" class="ring-img">
+        
+        <h1>Une promesse... 💍</h1>
+        <p style="font-size: 1.2rem; line-height: 1.6;">
+            "Un jour je te marierai et on vivra cette vie ensemble."
+        </p>
+        <p style="color: #ff4081; font-weight: bold;">Je t'aime Lamia.</p>
+    </div>
 
     <script>
-        // CŒURS D'ARRIÈRE-PLAN
-        function createHeart() {
+        // Création des coeurs flottants
+        const heartsContainer = document.getElementById('bgHearts');
+        for(let i=0; i<30; i++) {
             const heart = document.createElement('div');
-            heart.classList.add('heart');
-            document.getElementById('heartContainer').appendChild(heart);
-            const size = Math.random() * 20 + 10;
-            heart.style.width = size + 'px';
-            heart.style.height = size + 'px';
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 5 + 5 + 's';
-            setTimeout(() => { heart.remove(); }, 8000);
-        }
-        setInterval(createHeart, 400);
-
-        // LOGIQUE DU BOUTON FUYANT
-        const noBtn = document.getElementById('noBtn');
-        const yesBtn = document.getElementById('yesBtn');
-
-        // Fonction pour bouger le bouton
-        function moveButton() {
-            // Passe en position absolue dès le premier mouvement
-            noBtn.style.position = 'fixed'; 
-            
-            // Calculer les limites de l'écran (avec une marge de sécurité)
-            const margin = 50;
-            const maxX = window.innerWidth - noBtn.offsetWidth - margin;
-            const maxY = window.innerHeight - noBtn.offsetHeight - margin;
-
-            const newX = Math.random() * (maxX - margin) + margin;
-            const newY = Math.random() * (maxY - margin) + margin;
-
-            noBtn.style.left = newX + 'px';
-            noBtn.style.top = newY + 'px';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heartsContainer.appendChild(heart);
         }
 
-        // Déclencheurs pour PC (souris) et Mobile (toucher)
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Empêche le clic
-            moveButton();
-        });
-        noBtn.addEventListener('click', (e) => {
+        // Gestion du bouton NON qui s'enfuit
+        const btnNo = document.getElementById('btnNo');
+        const moveBtn = (e) => {
             e.preventDefault();
-            moveButton();
-        });
-
-        // CÉLÉBRATION
-        function celebrate() {
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('final-message').style.display = 'block';
+            const card = document.querySelector('.card');
+            const cardRect = card.getBoundingClientRect();
             
-            // Son
-            document.getElementById('confettiSound').play().catch(e => console.log("Audio bloqué par le navigateur"));
+            // Calcul pour garder le bouton DANS la carte ou proche
+            const x = Math.random() * (cardRect.width - 100);
+            const y = Math.random() * (cardRect.height - 50);
+            
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = x + 'px';
+            btnNo.style.top = y + 'px';
+        };
+        btnNo.addEventListener('mouseover', moveBtn);
+        btnNo.addEventListener('touchstart', moveBtn);
+        btnNo.addEventListener('click', moveBtn);
+
+        // Passage à l'étape 2 (Musique + Confettis)
+        function goToStep2() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            
+            // Lancer la musique
+            const audio = document.getElementById('loveSong');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Lecture auto bloquée : " + e));
 
             // Confettis
-            const duration = 5000;
+            const duration = 3000;
             const end = Date.now() + duration;
-
             (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff69b4', '#d81b60'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff69b4', '#d81b60'] });
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4081', '#ff9a9e'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4081', '#ff9a9e'] });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
+        }
+
+        // Passage à l'étape 3 (Bague)
+        function goToStep3() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+            // Relancer un petit coup de confettis dorés pour la bague
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#FFD700', '#FFA500'] });
         }
     </script>
 </body>
